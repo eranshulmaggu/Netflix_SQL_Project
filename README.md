@@ -45,6 +45,8 @@ SELECT
 FROM NETFLIX1
 GROUP BY TYPESS;
 ```
+### Output : 
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-1.png">
 
 ### 2. Find the most common rating for movies and TV shows
 
@@ -65,6 +67,10 @@ FROM CTE1
 WHERE RANKING = 1;
 ```
 
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-2.png">
+
 ### 3. List all movies released in a specific year (e.g., 2020)
 
 ```
@@ -74,6 +80,10 @@ FROM NETFLIX1
 WHERE RELEASE_YEAR = '2020'
     AND TYPESS = 'Movie';
 ```
+
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-3.png">
 
 ### 4. Find the top 5 countries with the most content on Netflix
 
@@ -87,6 +97,10 @@ ORDER BY MOST_CONTENT DESC
 LIMIT 5;
 ```
 
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-4.png">
+
 ### 5. Identify the longest movie
 
 ```
@@ -96,6 +110,10 @@ SELECT
     AND DURATION = (SELECT MAX(DURATION)FROM NETFLIX1) ;
 ```
 
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-5.png">
+
 ### 6. Find content added in the last 5 years
 
 ```
@@ -104,6 +122,10 @@ SELECT
 WHERE TO_DATE(DATE_ADDED,'MONTH DD, YYYY')>= CURRENT_DATE - INTERVAL '5 YEARS';
 ```
 
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-6.png">
+
 ### 7. Find all the movies/TV shows by director 'Rajiv Chilaka'!
 
 ```
@@ -111,6 +133,10 @@ SELECT *
 FROM NETFLIX1
 WHERE DIRECTOR ILIKE '%RAJIV CHILAKA%';
 ```
+
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-7.png">
 
 ### 8. List all TV shows with more than 5 seasons
 
@@ -122,6 +148,10 @@ WHERE TYPESS = 'TV Show'
     AND  SPLIT_PART (DURATION,' ',1)::INT > 5;
 ```
 
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-8.png">
+
 ### 9. Count the number of content items in each genre
 
 ```
@@ -131,6 +161,10 @@ SELECT
 FROM NETFLIX1
 GROUP BY NEW_LIST;
 ```
+
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-9.png">
 
 ### 10.Find each year and the average numbers of content release in India on Netflix. Return top 5 year with highest avg content release!
 
@@ -150,6 +184,10 @@ ORDER BY AVG_CONT DESC
 LIMIT 5;
 ```
 
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-10.png">
+
 ### 11. List all movies that are documentaries
 
 ```
@@ -160,6 +198,10 @@ WHERE LISTED_IN ILIKE '%DOCUMENTARIES%'
     AND TYPESS = 'Movie'
 ```
 
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-11.png">
+
 ### 12. Find all content without a director
 
 ```
@@ -168,6 +210,10 @@ SELECT
 FROM NETFLIX1
 WHERE DIRECTOR IS NULL;
 ```
+
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-12.png">
 
 ### 13. Find how many movies actor 'Salman Khan' appeared in last 10 years!
 
@@ -178,6 +224,10 @@ FROM NETFLIX1
 WHERE CASTS ILIKE '%SALMAN KHAN%'
     AND RELEASE_YEAR >= EXTRACT (YEAR FROM CURRENT_DATE) - 10;
 ```
+
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-13.png">
 
 ### 14. Find the top 10 actors who have appeared in the highest number of movies produced in India.
 
@@ -191,6 +241,10 @@ GROUP BY ACTORS
 ORDER BY HIGHEST_NUMBER DESC
 LIMIT 10;
 ```
+
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-14.png">
 
 ### 15.Categorize the content based on the presence of the keywords 'kill' and 'violence' in the description field. Label content containing these keywords as 'Bad' and all other content as 'Good'. Count how many items fall into each category.
 
@@ -206,6 +260,10 @@ SELECT
 FROM CTE
 GROUP BY CATEGORY;
 ```
+
+### Output : 
+
+<img src="https://github.com/eranshulmaggu/Netflix_SQL_Project/blob/856effc88e61658a48a73eaa38c35cf3cb986dc9/Screenshots/Query-15.png">
 
 
 ## Findings and Conclusion
