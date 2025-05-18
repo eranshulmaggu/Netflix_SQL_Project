@@ -40,71 +40,114 @@ CREATE TABLE NETFLIX1
 ### 1. Count the number of Movies vs TV Shows
 
 ```
-
-
+SELECT
+    TYPESS, COUNT(*)
+FROM NETFLIX1
+GROUP BY TYPESS;
 ```
 
-### 3. Find the most common rating for movies and TV shows
+### 2. Find the most common rating for movies and TV shows
 
 ```
-
-
+WITH CTE AS
+    (
+    SELECT TYPESS, RATING, COUNT(*) AS AVG_RATINGS
+    FROM NETFLIX1
+    GROUP BY TYPESS, RATING
+    ),
+CTE1 AS
+    (
+    SELECT TYPESS, RATING, RANK() OVER(PARTITION BY TYPESS ORDER BY AVG_RATINGS DESC) AS RANKING
+    FROM CTE
+    )
+SELECT TYPESS, RATING, RANKING
+FROM CTE1
+WHERE RANKING = 1;
 ```
 
-### 4. List all movies released in a specific year (e.g., 2020)
+### 3. List all movies released in a specific year (e.g., 2020)
 
 ```
-
-
+SELECT
+    *
+FROM NETFLIX1
+WHERE RELEASE_YEAR = '2020'
+    AND TYPESS = 'Movie';
 ```
 
-### 5. Find the top 5 countries with the most content on Netflix
+### 4. Find the top 5 countries with the most content on Netflix
 
 ```
-
-
+SELECT 
+    UNNEST(STRING_TO_ARRAY(COUNTRY,','))AS COUNTRY_WISE,
+    COUNT(SHOW_ID) AS MOST_CONTENT
+FROM NETFLIX1
+GROUP BY COUNTRY_WISE
+ORDER BY MOST_CONTENT DESC
+LIMIT 5;
 ```
 
-### 6. Identify the longest movie
+### 5. Identify the longest movie
 
 ```
-
-
+SELECT
+    * FROM NETFLIX1
+ WHERE  TYPESS = 'Movie'
+    AND DURATION = (SELECT MAX(DURATION)FROM NETFLIX1) ;
 ```
 
-### 7. Find content added in the last 5 years
+### 6. Find content added in the last 5 years
 
 ```
-
-
+SELECT
+    * FROM NETFLIX1
+WHERE TO_DATE(DATE_ADDED,'MONTH DD, YYYY')>= CURRENT_DATE - INTERVAL '5 YEARS';
 ```
 
-### 8. Find all the movies/TV shows by director 'Rajiv Chilaka'!
+### 7. Find all the movies/TV shows by director 'Rajiv Chilaka'!
 
 ```
-
-
+SELECT *
+FROM NETFLIX1
+WHERE DIRECTOR ILIKE '%RAJIV CHILAKA%';
 ```
 
-### 9. List all TV shows with more than 5 seasons
+### 8. List all TV shows with more than 5 seasons
 
 ```
-
-
+SELECT
+    *
+FROM NETFLIX1
+WHERE TYPESS = 'TV Show'
+    AND  SPLIT_PART (DURATION,' ',1)::INT > 5;
 ```
 
-### 10. Count the number of content items in each genre
+### 9. Count the number of content items in each genre
 
 ```
-
-
+SELECT
+    UNNEST(STRING_TO_ARRAY (LISTED_IN, ','))AS NEW_LIST,
+    COUNT(SHOW_ID) AS TOTALCON 
+FROM NETFLIX1
+GROUP BY NEW_LIST;
 ```
 
 ### 10.Find each year and the average numbers of content release in India on Netflix. Return top 5 year with highest avg content release!
 
 ```
-
-
+SELECT
+    EXTRACT (YEAR FROM TO_DATE(DATE_ADDED, 'MONTH DD,YYYY'))AS YEARS, 
+    COUNT(*), ROUND(COUNT(*):: NUMERIC /
+    (
+        SELECT COUNT(*)
+        FROM NETFLIX1
+        WHERE COUNTRY = 'India')* 100,2
+    ) AS AVG_CONT
+FROM NETFLIX1
+WHERE COUNTRY = 'India'
+GROUP BY YEARS 
+ORDER BY AVG_CONT DESC
+LIMIT 5;
 ```
 
 ### 11. List all movies that are documentaries
