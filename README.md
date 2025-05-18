@@ -17,11 +17,11 @@ The data for this project is sourced from the Kaggle dataset:
 ## Schema
 
 ```
-`ROP TABLE IF EXISTS netflix;
-CREATE TABLE netflix
+`DROP TABLE IF EXISTS NETFLIX1;
+CREATE TABLE NETFLIX1
 (
     show_id      VARCHAR(5),
-    type         VARCHAR(10),
+    typess         VARCHAR(10),
     title        VARCHAR(250),
     director     VARCHAR(550),
     casts        VARCHAR(1050),
@@ -110,32 +110,60 @@ CREATE TABLE netflix
 ### 11. List all movies that are documentaries
 
 ```
-
-
+SELECT
+    *
+FROM NETFLIX1
+WHERE LISTED_IN ILIKE '%DOCUMENTARIES%'
+    AND TYPESS = 'Movie'
 ```
 
 ### 12. Find all content without a director
 
 ```
-
-
+SELECT
+    *
+FROM NETFLIX1
+WHERE DIRECTOR IS NULL;
 ```
 
 ### 13. Find how many movies actor 'Salman Khan' appeared in last 10 years!
 
 ```
-
-
+SELECT
+    *
+FROM NETFLIX1
+WHERE CASTS ILIKE '%SALMAN KHAN%'
+    AND RELEASE_YEAR >= EXTRACT (YEAR FROM CURRENT_DATE) - 10;
 ```
 
 ### 14. Find the top 10 actors who have appeared in the highest number of movies produced in India.
 
 ```
-
-
+SELECT
+    UNNEST (STRING_TO_ARRAY(CASTS, ','))AS ACTORS, 
+    COUNT(*) AS HIGHEST_NUMBER 
+FROM NETFLIX1
+WHERE COUNTRY ILIKE '%INDIA%'
+GROUP BY ACTORS
+ORDER BY HIGHEST_NUMBER DESC
+LIMIT 10;
 ```
 
 ### 15.Categorize the content based on the presence of the keywords 'kill' and 'violence' in the description field. Label content containing these keywords as 'Bad' and all other content as 'Good'. Count how many items fall into each category.
+
+```
+WITH CTE AS (SELECT *, 
+    CASE
+        WHEN DESCRIPTION ILIKE '%KILL%' OR DESCRIPTION ILIKE '%VIOLENCE%' THEN 'BAD'
+        ELSE 'GOOD'
+        END AS CATEGORY
+    FROM NETFLIX1)
+SELECT
+    CATEGORY, COUNT(*) AS TOTAL_MOVIES
+FROM CTE
+GROUP BY CATEGORY;
+```
+
 
 ## Findings and Conclusion
 * Content Distribution: The dataset contains a diverse range of movies and TV shows with varying ratings and genres.
